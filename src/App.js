@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import '@ag-grid-community/all-modules/dist/styles/ag-grid.css';
+import '@ag-grid-community/all-modules/dist/styles/ag-theme-material.css';
+import { ClientSideRowModelModule } from '@ag-grid-community/all-modules';
+import { AgGridReact } from '@ag-grid-community/react';
+import { Button } from '@material-ui/core';
+import { ThemeProvider } from './theme';
+
+
+const MuiRenderer = () => {
+    return <Button>Button in Table</Button>
+}
+
+const rows = [
+    {}
+];
+
+const columnDefs = [
+    { cellRenderer: 'MuiRenderer', colId: 'button', headerName: 'Column With Button' }
+];
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div>
+            <ThemeProvider>
+                <Button>Button Outside</Button>
+                <div className='ag-theme-material'>
+                    <AgGridReact
+                        columnDefs={columnDefs}
+                        domLayout='autoHeight'
+                        frameworkComponents={{
+                            MuiRenderer,
+                        }}
+                        modules={[ClientSideRowModelModule]}
+                        rowData={rows}
+                    />
+                </div>
+            </ThemeProvider>
+        </div>
+    );
 }
 
 export default App;
